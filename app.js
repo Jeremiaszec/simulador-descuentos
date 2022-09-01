@@ -22,7 +22,7 @@ function precioFinal(precio, meses, formaDePago){
 function descuentoPeriodo(precio, periodo){
     let auxiliar = 0;
 
-    if(periodo == 1){
+    if(periodo < 6){
         auxiliar = precio*periodo;
     }
     else if(periodo >= 6 && periodo < 12){
