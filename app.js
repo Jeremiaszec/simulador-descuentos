@@ -8,6 +8,27 @@ variantes a considerar:
 -cantidad de servicios que incorpora cada cliente
 */ 
 
+function Carrito(){
+    this.servicios = [];
+    this.pagado = false;
+
+    this.agregar = function(servicio){
+        this.servicios.push(servicio);
+    }
+
+    this.total = function(){
+        let total=0;
+        this.servicios.forEach(function(servicio){
+            total = total + servicio.precioFinal();
+        })
+        return total;
+    }
+
+    this.pagar = function(){
+        pagado = true;
+    }
+}
+
 class Servicio{
     #public;
     constructor(precio, descuentoSemestral, descuentoAnual, descuentoEfectivo){
@@ -66,13 +87,8 @@ class Servicio{
     }
 }
 
-function precioTotal(servicios){
-    let total=0;
-    servicios.forEach(function(servicio){
-        total = total + servicio.precioFinal();
-    })
-    return total;
-}
+
+/******************** Comienzo del programa *************************/
 
 let servicioA = new Servicio(589, 0.9, 0.8, 0.85); 
 let servicioB = new Servicio(1000, 0.95, 0.9, 0.85);
@@ -80,11 +96,15 @@ let servicioB = new Servicio(1000, 0.95, 0.9, 0.85);
 servicioA.contratar(14, 'efectivo'); //se contrata por 14 meses y se paga en efectivo
 servicioB.contratar(6, 'tarjeta');  //se contrata por 6 meses y se paga con tarjeta
 
-let carrito = [];
-carrito.push(servicioA, servicioB);
+let carrito = new Carrito();
+
+carrito.agregar(servicioA);
+carrito.agregar(servicioB);
 
 console.log("Bienvenido a la a LaEmpresa");
-console.log(`El precio final del carrito es: ${precioTotal(carrito)}`);
+console.log(`El precio final del carrito es: ${carrito.total()}`);
 
+carrito.pagar();
 
+/***************************** FIN **********************************/
 
