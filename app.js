@@ -31,7 +31,9 @@ function Carrito(){
 
 class Servicio{
     #public;
-    constructor(precio, descuentoSemestral, descuentoAnual, descuentoEfectivo){
+    constructor(nombre, img,  precio, descuentoSemestral, descuentoAnual, descuentoEfectivo){
+        this.nombre = nombre;
+        this.img = img;
         this.precio = precio;
         this.descuentoSemestral = descuentoSemestral;
         this.descuentoAnual = descuentoAnual;
@@ -90,21 +92,41 @@ class Servicio{
 
 /******************** Comienzo del programa *************************/
 
-let servicioA = new Servicio(589, 0.9, 0.8, 0.85); 
-let servicioB = new Servicio(1000, 0.95, 0.9, 0.85);
+let servicioA = new Servicio("Instalacion de camaras IP", "img/camara_IP_262x262.png", 589, 0.9, 0.8, 0.85); 
+let servicioB = new Servicio("Monitorizacion de calderas", "img/caldera_262x262.png", 0.95, 0.9, 0.85);
+let servicioC = new Servicio("Instalacion de Motores", "img/motor_dc_262x262.png", 0.95, 0.9, 0.85);
 
-servicioA.contratar(14, 'efectivo'); //se contrata por 14 meses y se paga en efectivo
-servicioB.contratar(6, 'tarjeta');  //se contrata por 6 meses y se paga con tarjeta
+// servicioA.contratar(14, 'efectivo'); //se contrata por 14 meses y se paga en efectivo
+// servicioB.contratar(6, 'tarjeta');  //se contrata por 6 meses y se paga con tarjeta
 
-let carrito = new Carrito();
+// let carrito = new Carrito();
 
-carrito.agregar(servicioA);
-carrito.agregar(servicioB);
+// carrito.agregar(servicioA);
+// carrito.agregar(servicioB);
 
-console.log("Bienvenido a la a LaEmpresa");
-console.log(`El precio final del carrito es: ${carrito.total()}`);
+// console.log("Bienvenido a la a LaEmpresa");
+// console.log(`El precio final del carrito es: ${carrito.total()}`);
 
-carrito.pagar();
+// carrito.pagar();
 
+let servicios = [servicioA, servicioB, servicioC];
+
+let padre = document.getElementById("cards")
+padre.className = "row"
+
+let html_text = ""; 
+for (servicio of servicios) {
+    html_text = html_text +
+    `<div class="card m-2" style="width: 18rem;">
+        <img src=${servicio.img} class="card-img-top" alt="osito de peluche">
+        <div class="card-body">
+            <h5 class="card-title">${servicio.nombre}</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <a href="#" class="btn btn-primary">Agregar a el carrito</a>
+        </div>
+    </div>`;
+    
+}
+padre.innerHTML = html_text;
 /***************************** FIN **********************************/
 
