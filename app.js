@@ -109,6 +109,15 @@ let servicioC = new Servicio("Instalacion de Motores", "img/motor_dc_262x262.png
 
 // carrito.pagar();
 
+function changeText(id) {
+    if(id.innerHTML=='Agregar a el carrito'){
+        id.innerHTML = "Agregado";
+    }
+    else{
+        id.innerHTML = "Agregar a el carrito";
+    }
+}
+
 let servicios = [servicioA, servicioB, servicioC];
 
 let padre = document.getElementById("cards")
@@ -123,7 +132,6 @@ for (servicio of servicios) {
             <h5 class="card-title">${servicio.nombre}</h5>
             <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
             <a href="#" onclick="changeText(this)" class="btn btn-primary">Agregar a el carrito</a>
- 
         </div>
     </div>`;
 }
