@@ -96,18 +96,6 @@ let servicioA = new Servicio("Instalacion de camaras IP", "img/camara_IP_262x262
 let servicioB = new Servicio("Monitorizacion de calderas", "img/caldera_262x262.png", 0.95, 0.9, 0.85);
 let servicioC = new Servicio("Instalacion de Motores", "img/motor_dc_262x262.png", 0.95, 0.9, 0.85);
 
-// servicioA.contratar(14, 'efectivo'); //se contrata por 14 meses y se paga en efectivo
-// servicioB.contratar(6, 'tarjeta');  //se contrata por 6 meses y se paga con tarjeta
-
-// let carrito = new Carrito();
-
-// carrito.agregar(servicioA);
-// carrito.agregar(servicioB);
-
-// console.log("Bienvenido a la a LaEmpresa");
-// console.log(`El precio final del carrito es: ${carrito.total()}`);
-
-// carrito.pagar();
 
 function changeText(id) {
     if(id.innerHTML=='Agregar a el carrito'){
