@@ -8,62 +8,122 @@ variantes a considerar:
 -cantidad de servicios que incorpora cada cliente
 */ 
 
-const precioMensual = 589 /*mas IVA*/
+function Carrito(){
+    this.servicios = [];
+    this.pagado = false;
 
-const descuentoEfectivo = 0.85
-const descuentoSemestral = 0.9
-const descuentoAnual = 0.8
-
-function precioFinal(precio, meses, formaDePago){    
-    precioPrevio = descuento(precio, meses, formaDePago);
-    return precioPrevio*1.21;
-}
-
-function descuentoPeriodo(precio, periodo){
-    let auxiliar = 0;
-
-    if(periodo < 6){
-        auxiliar = precio*periodo;
+    this.agregar = function(servicio){
+        this.servicios.push(servicio);
     }
-    else if(periodo >= 6 && periodo < 12){
-        auxiliar = precio*periodo*descuentoSemestral;
+
+    this.total = function(){
+        let total=0;
+        this.servicios.forEach(function(servicio){
+            total = total + servicio.precioFinal();
+        })
+        return total;
     }
-    else if (periodo >= 12){
-        auxiliar = precio*periodo*descuentoAnual;
-    }
-    return auxiliar;
-}
 
-function descuentoForma(precio, formaDePago){
-    switch (formaDePago){
-        case 'tarjeta':
-            return precio;
-        break;
-
-        case 'efectivo':
-            return precio*descuentoEfectivo;
-        break;
-
-        default:
-            console.log("Error: la forma de pago elegida es incorrecta")
-            return 0;
-        break;
+    this.pagar = function(){
+        pagado = true;
     }
 }
 
-function descuento (precio, periodo, formaDePago){ 
-    return descuentoForma(descuentoPeriodo(precio, periodo), formaDePago);
+class Servicio{
+    #public;
+    constructor(nombre, img,  precio, descuentoSemestral, descuentoAnual, descuentoEfectivo){
+        this.nombre = nombre;
+        this.img = img;
+        this.precio = precio;
+        this.descuentoSemestral = descuentoSemestral;
+        this.descuentoAnual = descuentoAnual;
+        this.descuentoEfectivo = descuentoEfectivo;
+        this.formaDePago;
+        this.periodo;
+    }
+
+    contratar(periodo, formaDePago){
+        this.periodo = periodo;
+        this.formaDePago = formaDePago;
+    }
+
+    descuento(){ 
+        return this.descuentoForma(this.descuentoPeriodo());
+    }
+ 
+    precioFinal(){    
+        let precioPrevio = this.descuento(this.periodo, this.formaDePago);
+        return precioPrevio*1.21;
+    }
+     
+    
+    descuentoForma(precio){
+        switch (this.formaDePago){
+            case 'tarjeta':
+                return precio;
+            break;
+    
+            case 'efectivo':
+                return precio*this.descuentoEfectivo;
+            break;
+    
+            default:
+                console.log("Error: la forma de pago elegida es incorrecta")
+                return 0;
+            break;
+        }
+    }
+    descuentoPeriodo(){
+        let auxiliar = 0;
+    
+        if(this.periodo < 6){
+            auxiliar = this.precio*this.periodo;
+        }
+        else if(this.periodo >= 6 && this.periodo < 12){
+            auxiliar = this.precio*this.periodo*this.descuentoSemestral;
+        }
+        else if (this.periodo >= 12){
+            auxiliar = this.precio*this.periodo*this.descuentoAnual;
+        }
+        return auxiliar;
+    }
 }
 
-console.log("Bienvenido a la a LaEmpresa")
-let cantidadMeses = Number(prompt("ingrese la cantidad de meses que desea suscrbirse"))
-let formaDePago = prompt("ingrese una forma de pago: tarjeta|efectivo")
-console.log(`El precio final es: ${precioFinal(precioMensual, cantidadMeses, formaDePago)}`)
+
+/******************** Comienzo del programa *************************/
+
+let servicioA = new Servicio("Instalacion de camaras IP", "img/camara_IP_262x262.png", 589, 0.9, 0.8, 0.85); 
+let servicioB = new Servicio("Monitorizacion de calderas", "img/caldera_262x262.png", 0.95, 0.9, 0.85);
+let servicioC = new Servicio("Instalacion de Motores", "img/motor_dc_262x262.png", 0.95, 0.9, 0.85);
+
+function changeText(id) {
+    if(id.innerHTML=='Agregar a el carrito'){
+        id.innerHTML = "Agregado";
+    }
+    else{
+        id.innerHTML = "Agregar a el carrito";
+    }
+}
+
+let servicios = [servicioA, servicioB, servicioC];
+
+let padre = document.getElementById("cards")
+padre.className = "row"
+
+let html_text = ""; 
+for (servicio of servicios) {
+    html_text = html_text +
+    `<div class="card m-2" style="width: 18rem;">
+        <img src=${servicio.img} class="card-img-top" alt="osito de peluche">
+        <div class="card-body">
+            <h5 class="card-title">${servicio.nombre}</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <a href="#" onclick="changeText(this)" class="btn btn-primary">Agregar a el carrito</a>
+        </div>
+    </div>`;
+}
+padre.innerHTML = html_text;
 
 
-
-
-
-
-
+/***************************** FIN **********************************/
 
