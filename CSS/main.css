@@ -6,3 +6,45 @@
 body{
     background-color: aquamarine;
 }
+
+        /* Estilos para el botón del carrito */
+        .carrito {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #ffcc00;
+            color: #fff;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 50px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Estilos para el índice */
+        .indice {
+            display: flex;
+            justify-content: space-around;
+            background-color: #f2f2f2;
+            padding: 10px;
+            font-size: 18px;
+        }
+
+        .indice a {
+            text-decoration: none;
+            color: #333;
+            padding: 5px;
+        }
+
+        .indice a:hover {
+            background-color: #ddd;
+        }
+
+        @media only screen and (max-width: 600px) {
+            /* Estilos para pantallas más pequeñas */
+            .indice {
+                flex-wrap: wrap;
+            }
+        }
