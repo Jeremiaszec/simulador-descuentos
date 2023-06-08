@@ -12,31 +12,30 @@ variantes a considerar:
 
 /* a esto se lo llama funcion constructora y es una de las formas de definir un objeto */
 function Carrito(){
-    this.servicios = [];
+    this.servicios = []; //objetos servicios y no nombres
     this.pagado = false;
 
-    this.agregar = function(servicio){
-        this.servicios.push(servicio);
-        console.log(this.servicios);
+    this.agregar = function(servicioPorAgregar){
+        if(this.servicios == null){
+            this.servicios = [];
+        } 
+        this.servicios.push(servicioPorAgregar);
+        localStorage.removeItem(usuarioActual);
+        localStorage.setItem(usuarioActual, JSON.stringify(this.servicios));
     }
 
-    this.quitar = function(nombreServicio){
-
-        console.log(`${servicios[0].nombre} === ${nombreServicio}`); 
-        console.log(servicios[0].nombre === nombreServicio);
-
-
-        var index = this.servicios.findIndex(function(servicio){
-            return servicio === nombreServicio;
+    this.quitar = function(servicioPorRemover){
+        
+        var index = this.servicios.findIndex(function(servicioEnCarrito){
+            return servicioPorRemover.nombre === servicioEnCarrito.nombre;
         }); 
 
-        console.log(index);
-        console.log(this.servicios.length);
-        
         if(index > -1){
             this.servicios.splice(index, 1);
         }
-        console.log(this.servicios);
+
+        localStorage.removeItem(usuarioActual);
+        localStorage.setItem(usuarioActual, JSON.stringify(this.servicios));
     }
 
     this.total = function(){
@@ -52,10 +51,10 @@ function Carrito(){
     }
 }
 
-
 /* Esta es la forma clasica de definir un objeto */
 class Servicio{
     #public;
+
     constructor(nombre, img,  precio, descuentoSemestral, descuentoAnual, descuentoEfectivo){
         this.nombre = nombre;
         this.img = img;
@@ -67,6 +66,16 @@ class Servicio{
         this.periodo;
     }
 
+
+    enCarrito(){
+        for (let i = 0; i < carrito.servicios.length; i++) {
+            if (carrito.servicios[i].nombre === this.nombre) {
+            return true;
+            }
+        }
+        return false;
+    }
+    
     contratar(periodo, formaDePago){
         this.periodo = periodo;
         this.formaDePago = formaDePago;
@@ -117,6 +126,7 @@ class Servicio{
 
 /******************** Comienzo del programa *************************/
 
+//Creamos los servicios con los que vamos a trabajar
 let servicioA = new Servicio("Instalacion de camaras IP", "img/camara_IP_262x262.png", 589, 0.9, 0.8, 0.85); 
 let servicioB = new Servicio("Monitorizacion de calderas", "img/caldera_262x262.png", 0.95, 0.9, 0.85);
 let servicioC = new Servicio("Instalacion de Motores", "img/motor_dc_262x262.png", 0.95, 0.9, 0.85);
@@ -124,8 +134,17 @@ let servicioC = new Servicio("Instalacion de Motores", "img/motor_dc_262x262.png
 //servicioA.contratar(14, 'efectivo'); //se contrata por 14 meses y se paga en efectivo
 //servicioB.contratar(6, 'tarjeta');  //se contrata por 6 meses y se paga con tarjeta
 
+//creamos el carrito como variable global con la que vamos a trabajar
 let carrito = new Carrito();
+
+//creamos los servicios disponibles que ofrece la empresa y agregamos los servicios dfinidos
 let servicios = [servicioA, servicioB, servicioC];
+
+
+let usuarioActual = "";
+
+//iniciamos la sesion del usuario actual para cargar los valores guardados
+initSession();
 
 //carrito.agregar(servicioA);
 //carrito.agregar(servicioB);
@@ -135,6 +154,9 @@ let servicios = [servicioA, servicioB, servicioC];
 
 // carrito.pagar();
 
+
+
+//creamos el HTML segun los servicios que estamos ofreciendo, y el estado actual del carrito
 let padre = document.getElementById("cards")
 padre.className = "row"
 
@@ -148,7 +170,7 @@ for (servicio of servicios) {
     <div class="card-body">
         <h5 class="card-title">${servicio.nombre}</h5>
         <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        <a href="#" onclick="respuestaClick(this, '${servicio.nombre}')" class="btn btn-primary">Agregar a el carrito</a>
+        <a href="#" onclick="respuestaClick(this, '${servicio.nombre}')" class="btn btn-primary">${textoBotonCard(servicio)}</a>
     </div>
     `;
 
@@ -157,16 +179,43 @@ for (servicio of servicios) {
     padre.appendChild(html_card)
 }
 
-function respuestaClick(node, nombreServicio) {   
-    if(node.textContent =='Agregar a el carrito'){
-        carrito.agregar(nombreServicio);
-        node.textContent = "Agregado";
+//funcion auxiliar para colocar los textos segun el carrito de la sesion 
+function textoBotonCard(servicio){
+    if(servicio.enCarrito()){
+        return "Agregado";
     }
-    else{
-        carrito.quitar(nombreServicio);
-        node.textContent = "Agregar a el carrito";
+    return "Agregar a el carrito";
+}
+
+//funcion que inicializa la sesion del usuario actual, trabajamos con los datos del carrito
+function initSession(){
+    
+    usuarioActual = prompt('Ingrese nombre de usuario');
+
+    // el local storage, ejemplo:
+    //Jeremias, [{"servicio":"camaras", "tiempo": 12}, {"servicio: "motores, "tiempo": 5}];
+    //Marcos, [{"servicio":"camaras", "tiempo": 12}, {"servicio: "motores, "tiempo": 5}];
+
+    let carritoRecuperado = JSON.parse(localStorage.getItem(usuarioActual));
+
+    if(carritoRecuperado != null){ 
+        carrito.servicios = carritoRecuperado;
     }
 }
 
+/************************ EVENTOS HANDLERS **************************/
+function respuestaClick(node, nombreServicio) {  
+    
+    let servicio = servicios.find((element) => element.nombre === nombreServicio);
+
+    if(servicio.enCarrito()){
+        carrito.quitar(servicio);
+        node.textContent = "Agregar a el carrito";
+    }
+    else{
+        node.textContent = "Agregado";
+        carrito.agregar(servicio);
+    }
+}
 /***************************** FIN **********************************/
 
