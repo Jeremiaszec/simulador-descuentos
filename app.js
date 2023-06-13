@@ -9,16 +9,12 @@ variantes a considerar:
 */ 
 
 
-
 /* a esto se lo llama funcion constructora y es una de las formas de definir un objeto */
 function Carrito(){
     this.servicios = []; //objetos servicios y no nombres
     this.pagado = false;
 
     this.agregar = function(servicioPorAgregar){
-        if(this.servicios == null){
-            this.servicios = [];
-        } 
         this.servicios.push(servicioPorAgregar);
         localStorage.removeItem(usuarioActual);
         localStorage.setItem(usuarioActual, JSON.stringify(this.servicios));
@@ -27,7 +23,7 @@ function Carrito(){
     this.quitar = function(servicioPorRemover){
         
         var index = this.servicios.findIndex(function(servicioEnCarrito){
-            return servicioPorRemover.nombre === servicioEnCarrito.nombre;
+            return servicioPorRemover.id === servicioEnCarrito.id;
         }); 
 
         if(index > -1){
@@ -55,9 +51,11 @@ function Carrito(){
 class Servicio{
     #public;
 
-    constructor(nombre, img,  precio, descuentoSemestral, descuentoAnual, descuentoEfectivo){
+    constructor(id, nombre, img, resumen ,precio, descuentoSemestral, descuentoAnual, descuentoEfectivo){
+        this.id = id;
         this.nombre = nombre;
         this.img = img;
+        this.resumen = resumen;
         this.precio = precio;
         this.descuentoSemestral = descuentoSemestral;
         this.descuentoAnual = descuentoAnual;
@@ -69,7 +67,7 @@ class Servicio{
 
     enCarrito(){
         for (let i = 0; i < carrito.servicios.length; i++) {
-            if (carrito.servicios[i].nombre === this.nombre) {
+            if (carrito.servicios[i].id === this.id) {
             return true;
             }
         }
@@ -84,12 +82,11 @@ class Servicio{
     descuento(){ 
         return this.descuentoForma(this.descuentoPeriodo());
     }
- 
+
     precioFinal(){    
         let precioPrevio = this.descuento(this.periodo, this.formaDePago);
         return precioPrevio*1.21;
     }
-     
     
     descuentoForma(precio){
         switch (this.formaDePago){
@@ -126,11 +123,6 @@ class Servicio{
 
 /******************** Comienzo del programa *************************/
 
-//Creamos los servicios con los que vamos a trabajar
-let servicioA = new Servicio("Instalacion de camaras IP", "img/camara_IP_262x262.png", 589, 0.9, 0.8, 0.85); 
-let servicioB = new Servicio("Monitorizacion de calderas", "img/caldera_262x262.png", 0.95, 0.9, 0.85);
-let servicioC = new Servicio("Instalacion de Motores", "img/motor_dc_262x262.png", 0.95, 0.9, 0.85);
-
 //servicioA.contratar(14, 'efectivo'); //se contrata por 14 meses y se paga en efectivo
 //servicioB.contratar(6, 'tarjeta');  //se contrata por 6 meses y se paga con tarjeta
 
@@ -138,7 +130,18 @@ let servicioC = new Servicio("Instalacion de Motores", "img/motor_dc_262x262.png
 let carrito = new Carrito();
 
 //creamos los servicios disponibles que ofrece la empresa y agregamos los servicios dfinidos
-let servicios = [servicioA, servicioB, servicioC];
+let servicios = [
+    new Servicio(1, "Toyota Hilux DX/SR", "img/hilux2_262x262.png", "Camioneta 2x4 doble cabina color gris, 40 mil kilometros perfecto estado, color gris oscuro", 589, 0.9, 0.8, 0.85),
+    new Servicio(2, "Sprinter 8.4lts 2x4", "img/sprinter262x262.jpg.png", "Camioneta 2x4 18 pasajeros, 80 mil kilometros nueva, aire acondicionado", 0.95, 0.9, 0.85),
+    new Servicio(3, "Toyota Hilux 5MT 4x2", "img/hilux3_262x262.png", "Camioneta 2x4 doble cabina color gris, 140 mil kilometros perfecto estado, color gris claro", 0.95, 0.9, 0.85),
+    new Servicio(4, "Toyota Hilux DX/SR", "img/hilux2_262x262.png", "Camioneta 2x4 doble cabina color gris, 40 mil kilometros perfecto estado, color gris oscuro", 589, 0.9, 0.8, 0.85),
+    new Servicio(5, "Sprinter 8.4lts 2x4", "img/sprinter262x262.jpg.png", "Camioneta 2x4 18 pasajeros, 80 mil kilometros nueva, aire acondicionado", 0.95, 0.9, 0.85),
+    new Servicio(6, "Toyota Hilux 5MT 4x2", "img/hilux3_262x262.png", "Camioneta 2x4 doble cabina color gris, 140 mil kilometros perfecto estado, color gris claro", 0.95, 0.9, 0.85),
+    new Servicio(7, "Toyota Hilux DX/SR", "img/hilux2_262x262.png", "Camioneta 2x4 doble cabina color gris, 40 mil kilometros perfecto estado, color gris oscuro", 589, 0.9, 0.8, 0.85),
+    new Servicio(8, "Sprinter 8.4lts 2x4", "img/sprinter262x262.jpg.png", "Camioneta 2x4 18 pasajeros, 80 mil kilometros nueva, aire acondicionado", 0.95, 0.9, 0.85),
+    new Servicio(9, "Toyota Hilux 5MT 4x2", "img/hilux3_262x262.png", "Camioneta 2x4 doble cabina color gris, 140 mil kilometros perfecto estado, color gris claro", 0.95, 0.9, 0.85)
+];
+
 
 
 let usuarioActual = "";
@@ -157,7 +160,7 @@ initSession();
 
 
 //creamos el HTML segun los servicios que estamos ofreciendo, y el estado actual del carrito
-let padre = document.getElementById("cards")
+let padre = document.getElementById("cardsContainer")
 padre.className = "row"
 
 for (servicio of servicios) {
@@ -169,8 +172,8 @@ for (servicio of servicios) {
     <img src=${servicio.img} class="card-img-top" alt="osito de peluche">
     <div class="card-body">
         <h5 class="card-title">${servicio.nombre}</h5>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        <a href="#" onclick="respuestaClick(this, '${servicio.nombre}')" class="btn btn-primary">${textoBotonCard(servicio)}</a>
+        <p class="card-text">${servicio.resumen}</p>
+        <a onclick="respuestaClick(this, ${servicio.id})" class="btn btn-primary">${textoBotonCard(servicio)}</a>
     </div>
     `;
 
@@ -196,17 +199,15 @@ function initSession(){
     //Jeremias, [{"servicio":"camaras", "tiempo": 12}, {"servicio: "motores, "tiempo": 5}];
     //Marcos, [{"servicio":"camaras", "tiempo": 12}, {"servicio: "motores, "tiempo": 5}];
 
-    let carritoRecuperado = JSON.parse(localStorage.getItem(usuarioActual));
-
-    if(carritoRecuperado != null){ 
-        carrito.servicios = carritoRecuperado;
-    }
+    // aca se utilizan los operadores de orden superior para que los servicios del carrito no queden en null
+    carrito.servicios = JSON.parse(localStorage.getItem(usuarioActual)) || [];
 }
 
 /************************ EVENTOS HANDLERS **************************/
-function respuestaClick(node, nombreServicio) {  
+
+async function respuestaClick(node, id) {  
     
-    let servicio = servicios.find((element) => element.nombre === nombreServicio);
+    let servicio = servicios.find((element) => element.id === id);
 
     if(servicio.enCarrito()){
         carrito.quitar(servicio);
@@ -215,7 +216,30 @@ function respuestaClick(node, nombreServicio) {
     else{
         node.textContent = "Agregado";
         carrito.agregar(servicio);
+        //Podemos usar este efecto de la libreria sweetalert2
+        // Swal.fire({
+        //     title: '¡Agregado!',
+        //     text: 'El servicio se agrego correctamente',
+        //     icon: 'success',
+        //     confirmButtonText: 'continuar'
+        // })
+
+
+        //o podemos usar este otro de la libreria toastify
+        Toastify({
+            text: "agregado al carrito",
+            duration: 2000,
+            destination: "https://github.com/apvarun/toastify-js",
+            newWindow: true,
+            close: true,
+            gravity: "top", // `top` or `bottom`
+            position: "right", // `left`, `center` or `right`
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+            style: {
+            background: "linear-gradient(to right, #00b09b, #96c93d)",
+            },
+            onClick: function(){} // Callback after click
+        }).showToast();
     }
 }
 /***************************** FIN **********************************/
-

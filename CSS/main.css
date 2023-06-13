@@ -1,50 +1,99 @@
-*{
-    margin: 0px; 
-    padding: 0px;
+/* Estilos generales */
+body {
+    background-color: #f2f2f2;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
-body{
-    background-color: aquamarine;
+#cardsContainer{
+    margin-left: 4rem;
+    margin-right: 4rem;
 }
 
-        /* Estilos para el botón del carrito */
-        .carrito {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background-color: #ffcc00;
-            color: #fff;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            text-align: center;
-            line-height: 50px;
-            font-size: 24px;
-            cursor: pointer;
-        }
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
 
-        /* Estilos para el índice */
-        .indice {
-            display: flex;
-            justify-content: space-around;
-            background-color: #f2f2f2;
-            padding: 10px;
-            font-size: 18px;
-        }
+.btn-primary {
+    margin-top: auto;
+}
 
-        .indice a {
-            text-decoration: none;
-            color: #333;
-            padding: 5px;
-        }
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
 
-        .indice a:hover {
-            background-color: #ddd;
-        }
+/* Encabezado */
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+}
 
-        @media only screen and (max-width: 600px) {
-            /* Estilos para pantallas más pequeñas */
-            .indice {
-                flex-wrap: wrap;
-            }
-        }
+header h1 {
+    font-size: 28px;
+    margin: 0;
+}
+
+header p {
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+/* Menú de navegación */
+nav {
+    background-color: #fff;
+    padding: 10px;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+}
+
+nav div{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+nav a {
+    text-decoration: none;
+    color: #333;
+    font-size: 16px;
+    padding: 10px 20px;
+    margin: 0 10px;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.3s ease;
+}
+
+nav a:hover {
+    border-color: #333;
+}
+
+/* Pie de página */
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+
+}
+
+.colored-toast.swal2-icon-success {
+    background-color: #a5dc86 !important;
+}
+
+footer p {
+    font-size: 14px;
+    margin: 0;
+}  
