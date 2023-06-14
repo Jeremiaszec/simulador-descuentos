@@ -1,0 +1,13 @@
+
+//servicios
+[
+    {"id": 1,"nombre": "Toyota Hilux DX/SR", "img": "img/hilux2_262x262.png", "resumen": "Camioneta 2x4 doble cabina color gris, 40 mil kilometros perfecto estado, color gris oscuro", "precio": 589, "descuentoSemestral": 0.9, "descuentoAnual": 0.8, "descuentoEfectivo": 0.85},
+    {"id": 2,"nombre": "Sprinter 8.4lts 2x4", "img": "img/sprinter262x262.jpg.png", "resumen": "Camioneta 2x4 18 pasajeros, 80 mil kilometros nueva, aire acondicionado", "precio": 200, "descuentoSemestral": 0.95, "descuentoAnual": 0.9, "descuentoEfectivo": 0.85},
+    {"id": 3,"nombre": "Toyota Hilux 5MT 4x2", "img": "img/hilux3_262x262.png", "Camioneta 2x4 doble cabina color gris, 140 mil kilometros perfecto estado, color gris claro", "descuentoSemestral": 0.95, "descuentoAnual": 0.9, "descuentoEfectivo": 0.85},
+    {"id": 4,"nombre": "Toyota Hilux DX/SR", "img": "img/hilux2_262x262.png", "resumen": "Camioneta 2x4 doble cabina color gris, 40 mil kilometros perfecto estado, color gris oscuro", "precio": 589, "descuentoSemestral": 0.9, "descuentoAnual": 0.8, "descuentoEfectivo": 0.85},
+    {"id": 5,"nombre": "Sprinter 8.4lts 2x4", "img": "img/sprinter262x262.jpg.png", "resumen": "Camioneta 2x4 18 pasajeros, 80 mil kilometros nueva, aire acondicionado", "precio": 200, "descuentoSemestral": 0.95, "descuentoAnual": 0.9, "descuentoEfectivo": 0.85},
+    {"id": 6,"nombre": "Toyota Hilux 5MT 4x2", "img": "img/hilux3_262x262.png", "Camioneta 2x4 doble cabina color gris, 140 mil kilometros perfecto estado, color gris claro", "descuentoSemestral": 0.95, "descuentoAnual": 0.9, "descuentoEfectivo": 0.85},
+    {"id": 7,"nombre": "Toyota Hilux DX/SR", "img": "img/hilux2_262x262.png", "resumen": "Camioneta 2x4 doble cabina color gris, 40 mil kilometros perfecto estado, color gris oscuro", "precio": 589, "descuentoSemestral": 0.9, "descuentoAnual": 0.8, "descuentoEfectivo": 0.85},
+    {"id": 8,"nombre": "Sprinter 8.4lts 2x4", "img": "img/sprinter262x262.jpg.png", "resumen": "Camioneta 2x4 18 pasajeros, 80 mil kilometros nueva, aire acondicionado", "precio": 200, "descuentoSemestral": 0.95, "descuentoAnual": 0.9, "descuentoEfectivo": 0.85},
+    {"id": 9,"nombre": "Toyota Hilux 5MT 4x2", "img": "img/hilux3_262x262.png", "Camioneta 2x4 doble cabina color gris, 140 mil kilometros perfecto estado, color gris claro", "descuentoSemestral": 0.95, "descuentoAnual": 0.9, "descuentoEfectivo": 0.85},
+]

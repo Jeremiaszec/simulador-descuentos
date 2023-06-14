@@ -5,7 +5,7 @@ Se considera una empresa que ofrece servicios en vez de productos y que ofrece d
 variantes a considerar:
 -forma de pago: tarjeta, efectvo, credito
 -precio servicio
--cantidad de servicios que incorpora cada cliente
+-cantidad de meses que contrata el servicio
 */ 
 
 
@@ -60,10 +60,22 @@ class Servicio{
         this.descuentoSemestral = descuentoSemestral;
         this.descuentoAnual = descuentoAnual;
         this.descuentoEfectivo = descuentoEfectivo;
-        this.formaDePago;
-        this.periodo;
+        this.formaDePago = "efectivo";
+        this.periodo = 1;
     }
 
+    constructor(objeto){
+        this.id = objeto.id;
+        this.nombre = objeto.nombre;
+        this.img = objeto.img;
+        this.resumen = objeto.resumen;
+        this.precio = objeto.precio;
+        this.descuentoSemestral = objeto.descuentoSemestral;
+        this.descuentoAnual = objeto.descuentoAnual;
+        this.descuentoEfectivo = objeto.descuentoEfectivo;
+        this.formaDePago = "efectivo";
+        this.periodo = 1;
+    }
 
     enCarrito(){
         for (let i = 0; i < carrito.servicios.length; i++) {
