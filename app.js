@@ -51,18 +51,18 @@ function Carrito(){
 class Servicio{
     #public;
 
-    constructor(id, nombre, img, resumen ,precio, descuentoSemestral, descuentoAnual, descuentoEfectivo){
-        this.id = id;
-        this.nombre = nombre;
-        this.img = img;
-        this.resumen = resumen;
-        this.precio = precio;
-        this.descuentoSemestral = descuentoSemestral;
-        this.descuentoAnual = descuentoAnual;
-        this.descuentoEfectivo = descuentoEfectivo;
-        this.formaDePago = "efectivo";
-        this.periodo = 1;
-    }
+    // constructor(id, nombre, img, resumen ,precio, descuentoSemestral, descuentoAnual, descuentoEfectivo){
+    //     this.id = id;
+    //     this.nombre = nombre;
+    //     this.img = img;
+    //     this.resumen = resumen;
+    //     this.precio = precio;
+    //     this.descuentoSemestral = descuentoSemestral;
+    //     this.descuentoAnual = descuentoAnual;
+    //     this.descuentoEfectivo = descuentoEfectivo;
+    //     this.formaDePago = "efectivo";
+    //     this.periodo = 1;
+    // }
 
     constructor(objeto){
         this.id = objeto.id;
@@ -140,27 +140,14 @@ class Servicio{
 
 //creamos el carrito como variable global con la que vamos a trabajar
 let carrito = new Carrito();
-
-//creamos los servicios disponibles que ofrece la empresa y agregamos los servicios dfinidos
-let servicios = [
-    new Servicio(1, "Toyota Hilux DX/SR", "img/hilux2_262x262.png", "Camioneta 2x4 doble cabina color gris, 40 mil kilometros perfecto estado, color gris oscuro", 589, 0.9, 0.8, 0.85),
-    new Servicio(2, "Sprinter 8.4lts 2x4", "img/sprinter262x262.jpg.png", "Camioneta 2x4 18 pasajeros, 80 mil kilometros nueva, aire acondicionado", 0.95, 0.9, 0.85),
-    new Servicio(3, "Toyota Hilux 5MT 4x2", "img/hilux3_262x262.png", "Camioneta 2x4 doble cabina color gris, 140 mil kilometros perfecto estado, color gris claro", 0.95, 0.9, 0.85),
-    new Servicio(4, "Toyota Hilux DX/SR", "img/hilux2_262x262.png", "Camioneta 2x4 doble cabina color gris, 40 mil kilometros perfecto estado, color gris oscuro", 589, 0.9, 0.8, 0.85),
-    new Servicio(5, "Sprinter 8.4lts 2x4", "img/sprinter262x262.jpg.png", "Camioneta 2x4 18 pasajeros, 80 mil kilometros nueva, aire acondicionado", 0.95, 0.9, 0.85),
-    new Servicio(6, "Toyota Hilux 5MT 4x2", "img/hilux3_262x262.png", "Camioneta 2x4 doble cabina color gris, 140 mil kilometros perfecto estado, color gris claro", 0.95, 0.9, 0.85),
-    new Servicio(7, "Toyota Hilux DX/SR", "img/hilux2_262x262.png", "Camioneta 2x4 doble cabina color gris, 40 mil kilometros perfecto estado, color gris oscuro", 589, 0.9, 0.8, 0.85),
-    new Servicio(8, "Sprinter 8.4lts 2x4", "img/sprinter262x262.jpg.png", "Camioneta 2x4 18 pasajeros, 80 mil kilometros nueva, aire acondicionado", 0.95, 0.9, 0.85),
-    new Servicio(9, "Toyota Hilux 5MT 4x2", "img/hilux3_262x262.png", "Camioneta 2x4 doble cabina color gris, 140 mil kilometros perfecto estado, color gris claro", 0.95, 0.9, 0.85)
-];
-
-
-
 let usuarioActual = "";
+let servicios=[];
+
 
 //iniciamos la sesion del usuario actual para cargar los valores guardados
 initSession();
-
+cargarServicios('./data.json');
+console.log(servicios.length);
 //carrito.agregar(servicioA);
 //carrito.agregar(servicioB);
 
@@ -170,29 +157,64 @@ initSession();
 // carrito.pagar();
 
 
+async function cargarServicios(ruta){
+    //creamos el HTML segun los servicios que estamos ofreciendo, y el estado actual del carrito
+    let padre = document.getElementById("cardsContainer")
+    padre.className = "row"
 
-//creamos el HTML segun los servicios que estamos ofreciendo, y el estado actual del carrito
-let padre = document.getElementById("cardsContainer")
-padre.className = "row"
 
-for (servicio of servicios) {
-    let html_card = document.createElement("div")
-    html_card.className = "card m-2";
-    html_card.style.width = "18rem";
-    html_card.innerHTML =
-    `
-    <img src=${servicio.img} class="card-img-top" alt="osito de peluche">
-    <div class="card-body">
-        <h5 class="card-title">${servicio.nombre}</h5>
-        <p class="card-text">${servicio.resumen}</p>
-        <a onclick="respuestaClick(this, ${servicio.id})" class="btn btn-primary">${textoBotonCard(servicio)}</a>
-    </div>
-    `;
+//Con el uso de promesas y .then para manejar el asincronismo
+/*     fetch(ruta)
+        .then((res) => res.json())
+        .then((data) => {
+            data.forEach((servicioJson) => {
+                let servicio = new Servicio(servicioJson);
+                servicios.push(servicio);
+                let html_card = document.createElement("div")
+                html_card.className = "card m-2";
+                html_card.style.width = "18rem";
+                html_card.innerHTML =
+                `
+                <img src=${servicio.img} class="card-img-top" alt="osito de peluche">
+                <div class="card-body">
+                    <h5 class="card-title">${servicio.nombre}</h5>
+                    <p class="card-text">${servicio.resumen}</p>
+                    <a onclick="respuestaClick(this, ${servicio.id})" class="btn btn-primary">${textoBotonCard(servicio)}</a>
+                </div>
+                `;
+            
+                //let button = html_card.querySelector("div a");
+                
+                padre.appendChild(html_card)            
+            });
+    }); */
 
-    //let button = html_card.querySelector("div a");
-    
-    padre.appendChild(html_card)
+//Con el uso de async-await para cuando las promesas se cumplan
+    const res = await fetch(ruta)    
+        const data = await res.json()
+        
+        data.forEach((servicioJson) => {
+            let servicio = new Servicio(servicioJson);
+            servicios.push(servicio);
+            let html_card = document.createElement("div")
+            html_card.className = "card m-2";
+            html_card.style.width = "18rem";
+            html_card.innerHTML =
+            `
+            <img src=${servicio.img} class="card-img-top" alt="osito de peluche">
+            <div class="card-body">
+                <h5 class="card-title">${servicio.nombre}</h5>
+                <p class="card-text">${servicio.resumen}</p>
+                <a onclick="respuestaClick(this, ${servicio.id})" class="btn btn-primary">${textoBotonCard(servicio)}</a>
+            </div>
+            `;
+        
+            //let button = html_card.querySelector("div a");
+            
+            padre.appendChild(html_card)            
+        });
 }
+
 
 //funcion auxiliar para colocar los textos segun el carrito de la sesion 
 function textoBotonCard(servicio){
@@ -203,13 +225,8 @@ function textoBotonCard(servicio){
 }
 
 //funcion que inicializa la sesion del usuario actual, trabajamos con los datos del carrito
-function initSession(){
-    
+function initSession(){    
     usuarioActual = prompt('Ingrese nombre de usuario');
-
-    // el local storage, ejemplo:
-    //Jeremias, [{"servicio":"camaras", "tiempo": 12}, {"servicio: "motores, "tiempo": 5}];
-    //Marcos, [{"servicio":"camaras", "tiempo": 12}, {"servicio: "motores, "tiempo": 5}];
 
     // aca se utilizan los operadores de orden superior para que los servicios del carrito no queden en null
     carrito.servicios = JSON.parse(localStorage.getItem(usuarioActual)) || [];
